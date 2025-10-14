@@ -2,7 +2,7 @@ version: '3'
 services:
 
   microweb:   
-    build: ./microweb
+    image: vamphook972/microweb_tienda:latest
     ports:
       - "8181:80" 
     depends_on:
@@ -11,7 +11,7 @@ services:
       - ordenes
 
   usuarios:
-    build: ./usuarios
+    image: vamphook972/usuarios_tienda:latest
     ports:
       - "3001:3001"
     depends_on:
@@ -28,7 +28,7 @@ services:
       - ./usuarios/db:/var/lib/mysql
 
   productos:
-    build: ./productos 
+    image: vamphook972/productos_tienda:latest
     ports:
       - "3002:3002"
     depends_on:
@@ -44,7 +44,7 @@ services:
     volumes:
       - ./productos/db:/var/lib/mysql
   ordenes:
-    build: ./ordenes 
+    image: vamphook972/ordenes_tienda:latest
     ports:
       - "3003:3003"
     depends_on:
