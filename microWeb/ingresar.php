@@ -19,19 +19,16 @@
         session_start();
         $_SESSION["usuario"]=$user;
         if ($user == "admin"){ 
-            //echo "admin";
+            echo "admin";
             header("Location:admin.php");
-            exit();
         } 
         else { 
-            //echo "usuario";
+            echo "usuario";
             header("Location:usuario.php");
-            exit();
         } 
     }
     else {
-        header("Location:index.html");
-        exit();
+    header("Location:index.html"); 
     }
 
 ?>

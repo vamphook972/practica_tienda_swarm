@@ -29,13 +29,10 @@
 
     // Manejar la respuesta
     if ($response===false){
-        curl_close($ch);
         header("Location:index.html");
-        exit();
     }
     // Cerrar la conexión cURL
     curl_close($ch);
     header("Location:admin-prod.php");
-    exit();
 
 ?>
