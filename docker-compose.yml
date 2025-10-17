@@ -104,7 +104,3 @@ services:
           - node.hostname == servidorUbuntu2
     depends_on:
       - microWeb
-   
-  networks:
-    default:
-      driver: overlay
