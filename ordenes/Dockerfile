@@ -1,15 +1,13 @@
-From node 
+FROM node
+EXPOSE 3003
 
-Expose 3003
+WORKDIR /ordenes
 
-workdir /ordenes
+COPY controllers /ordenes/controllers
+COPY models /ordenes/models
+COPY index.js /ordenes
 
-Copy controllers /ordenes/controllers
-Copy models /ordenes/models
-copy index.js /ordenes
+RUN npm init --yes
+RUN npm install express morgan mysql mysql2 axios
 
-run npm init --yes
-run npm install express morgan mysql mysql2 axios 
-
-cmd node index.js 
-
+CMD node index.js

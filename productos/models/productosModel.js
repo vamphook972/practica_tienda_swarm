@@ -1,11 +1,11 @@
 const mysql = require('mysql2/promise');
 
 const connection = mysql.createPool({
-    host: 'db',
+    host: 'db_productos',
+    port: 3306,
     user: 'root',
-    password: 'root',
-    port: '3306',
-    database: 'almacen'
+    password: 'mysql',
+    database: 'productos_db'
 });
 
 async function traerProductos() {

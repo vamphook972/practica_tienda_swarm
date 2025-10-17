@@ -5,7 +5,7 @@
     $pass=$_POST["password"];
 
     // URL de la solicitud POST
-    $url = 'http://localhost:3001/usuarios';
+    $url = 'http://usuarios:3001/usuarios';
 
     // Datos que se enviarán en la solicitud POST
     $data = array(
@@ -31,10 +31,13 @@
 
     // Manejar la respuesta
     if ($response===false){
+        curl_close($ch);
         header("Location:index.html");
+        exit();
     }
     // Cerrar la conexión cURL
     curl_close($ch);
     header("Location:admin.php");
+    exit();
 
 ?>

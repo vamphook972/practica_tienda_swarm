@@ -1,44 +1,110 @@
-version: '2'
+version: '3'
 services:
-  usuarios:
-    build: ./usuarios
+  microWeb:
+    image: vamphook972/microweb:latest
     ports:
-      - "3001:3001"
-    links:
-      - db
-
-  productos:
-    build: ./productos
-    ports:
-      - "3002:3002"
-    links:
-      - db
-
-  ordenes:
-    build: ./ordenes
-    ports:
-      - "3003:3003"
-    links:
-      - db
-      - usuarios
-      - productos
-
-  microweb:
-    build: ./microweb
-    ports:
-      - "1080:80"
-    links:
+      - "8181:80"
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu2
+    depends_on:
       - usuarios
       - productos
       - ordenes
-  db:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: root
+
+  usuarios:
+    image: vamphook972/usuarios:latest
     ports:
-      - "32000:3306"
+      - "3001:3001"
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu1
+    depends_on:
+      - db_usuarios
+
+  db_usuarios:
+    image: mysql:8.0
+    ports:
+      - "3309:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=usuarios_db
     volumes:
-      - db_data:/var/lib/mysql
-      - ./db:/docker-entrypoint-initdb.d:ro
-volumes:
-  db_data:
+      - /home/vagrant/DockerSwarm_shop/usuarios/db:/var/lib/mysql
+      - /home/vagrant/DockerSwarm_shop/usuarios/init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu1
+
+  productos:
+    image: vamphook972/productos:latest
+    ports:
+      - "3002:3002"
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu1
+    depends_on:
+      - db_productos
+
+  db_productos:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=productos_db
+    volumes:
+      - /home/vagrant/DockerSwarm_shop/productos/db:/var/lib/mysql
+      - /home/vagrant/DockerSwarm_shop/productos/init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu1
+
+  ordenes:
+    image: vamphook972/ordenes:latest
+    ports:
+      - "3003:3003"
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu1
+    depends_on:
+      - usuarios
+      - productos
+      - db_ordenes
+
+  db_ordenes:
+    image: mysql:8.0
+    ports:
+      - "3308:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=ordenes_db
+    volumes:
+      - /home/vagrant/DockerSwarm_shop/ordenes/db:/var/lib/mysql
+      - /home/vagrant/DockerSwarm_shop/ordenes/init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu1
+    
+  haproxy:
+    image: vamphook972/haproxy-swarm:latest
+    ports:
+      - "8282:8282"   # Puerto HTTP principal
+      - "3080:3080"   # Panel de estadísticas
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu2
+    depends_on:
+      - microWeb
+   
+  networks:
+    default:
+      driver: overlay

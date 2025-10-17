@@ -2,7 +2,7 @@
     $user=$_POST["usuario"];
     $pass=$_POST["password"];
 
-    $servurl="http://localhost:3001/usuarios/$user/$pass";
+    $servurl="http://usuarios:3001/usuarios/$user/$pass";
     $curl=curl_init($servurl);
 
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -19,16 +19,19 @@
         session_start();
         $_SESSION["usuario"]=$user;
         if ($user == "admin"){ 
-            echo "admin";
+            //echo "admin";
             header("Location:admin.php");
+            exit();
         } 
         else { 
-            echo "usuario";
+            //echo "usuario";
             header("Location:usuario.php");
+            exit();
         } 
     }
     else {
-    header("Location:index.html"); 
+        header("Location:index.html");
+        exit();
     }
 
 ?>
