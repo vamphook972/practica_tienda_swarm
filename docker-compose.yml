@@ -5,6 +5,7 @@ services:
     ports:
       - "8181:80"
     deploy:
+      replicas: 1
       placement:
         constraints:
           - node.hostname == servidorUbuntu2
@@ -18,6 +19,7 @@ services:
     ports:
       - "3001:3001"
     deploy:
+      replicas: 1
       placement:
         constraints:
           - node.hostname == servidorUbuntu1
@@ -35,6 +37,7 @@ services:
       - /home/vagrant/DockerSwarm_shop/usuarios/db:/var/lib/mysql
       - /home/vagrant/DockerSwarm_shop/usuarios/init/init.sql:/docker-entrypoint-initdb.d/init.sql
     deploy:
+      replicas: 1
       placement:
         constraints:
           - node.hostname == servidorUbuntu1
@@ -44,6 +47,7 @@ services:
     ports:
       - "3002:3002"
     deploy:
+      replicas: 1
       placement:
         constraints:
           - node.hostname == servidorUbuntu1
@@ -61,6 +65,7 @@ services:
       - /home/vagrant/DockerSwarm_shop/productos/db:/var/lib/mysql
       - /home/vagrant/DockerSwarm_shop/productos/init/init.sql:/docker-entrypoint-initdb.d/init.sql
     deploy:
+      replicas: 1
       placement:
         constraints:
           - node.hostname == servidorUbuntu1
@@ -70,6 +75,7 @@ services:
     ports:
       - "3003:3003"
     deploy:
+      replicas: 1
       placement:
         constraints:
           - node.hostname == servidorUbuntu1
@@ -89,6 +95,7 @@ services:
       - /home/vagrant/DockerSwarm_shop/ordenes/db:/var/lib/mysql
       - /home/vagrant/DockerSwarm_shop/ordenes/init/init.sql:/docker-entrypoint-initdb.d/init.sql
     deploy:
+      replicas: 1
       placement:
         constraints:
           - node.hostname == servidorUbuntu1
@@ -99,6 +106,7 @@ services:
       - "8282:8282"   # Puerto HTTP principal
       - "3080:3080"   # Panel de estadísticas
     deploy:
+      replicas: 1
       placement:
         constraints:
           - node.hostname == servidorUbuntu2
